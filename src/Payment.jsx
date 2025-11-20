@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./payment.css";
+import "./Payment.css";
 import { toast } from "react-toastify";
 
 function Payment({ total, paymentMethod, setPaymentMethod, closeModal,setTotal }) {
