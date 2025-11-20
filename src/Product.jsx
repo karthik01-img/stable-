@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Payment from "./Payment";
-import "./product.css";
+import "./Product.css";
 import { ToastContainer, toast } from "react-toastify";
 
 function Product() {
