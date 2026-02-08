@@ -28,7 +28,7 @@ function Payment({ total, paymentMethod, setPaymentMethod, closeModal,setTotal }
 
         <button className="close-btn" onClick={closeModal}>✖</button>
 
-        <h2>Pay ${total}</h2>
+        <h2>Pay ${total.toFixed(2)}</h2>
 
         <div className="payment-options">
           <label><input type="radio" value="card"

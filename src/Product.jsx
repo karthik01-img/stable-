@@ -10,6 +10,8 @@ function Product() {
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState("all");
     const [loading, setLoading] = useState(true);
+    const [showCartModal, setShowCartModal] = useState(false);
+
 
     const [showPayment, setShowPayment] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("");
@@ -88,7 +90,10 @@ function decrease(item) {
                     onChange={(e) => setSearch(e.target.value)}
                 />
 
-                <div className="cart-count">🛒 {cart.length}</div>
+                <button onClick={() => setShowCartModal(true)} className="cart-count">
+  🛒 {cart.length}
+</button>
+
             </nav>
 
             {/* Category Filter */}
@@ -120,32 +125,50 @@ function decrease(item) {
             </div>
 
             {/* Cart */}
-            <div className="cart-section">
-                <h2>Cart ({cart.length})</h2>
+            
+{showCartModal && (
+  <div className="modal-bg">
+    <div className="modal-box animate-popup cart-modal">
 
-                {cart.map((item) => (
-                    <div className="cart-item" key={item.id}>
-                        <img src={item.image} />
-                        <div>
-                         <h4>  {item.title.length > 20 ? item.title.substring(0, 20) + "..." : item.title}</h4>
-                            <p>${item.price}</p>
-                                  {/* Quantity controls */}
-                                <div className="qty-box">
-                                <button onClick={() => decrease(item)}>-</button>
-                                <span>{item.quantity}</span>
-                                <button onClick={() => increase(item)}>+</button>
-                                </div>
-                        </div>
-                        <button className="remove-btn" onClick={() => removefromcart(item)}>Remove</button>
-                    </div>
-                ))}
+      <button className="close-btn" onClick={() => setShowCartModal(false)}>✖</button>
 
-                {cart.length > 0 && (
-                    <button className="total-btn" onClick={calculateTotal}>Calculate Total</button>
-                )}
+      <h2>Your Cart ({cart.length})</h2>
 
-                <h3>Total: ${total}</h3>
+      {cart.length === 0 && <p>Your cart is empty.</p>}
+
+      {cart.map((item) => (
+        <div className="cart-item" key={item.id}>
+          <img src={item.image} />
+
+          <div>
+            <h4>{item.title.length > 20 ? item.title.substring(0, 20) + "..." : item.title}</h4>
+            <p>${item.price.toFixed(2)}</p>
+
+            <div className="qty-box">
+              <button onClick={() => decrease(item)}>-</button>
+              <span>{item.quantity}</span>
+              <button onClick={() => increase(item)}>+</button>
             </div>
+          </div>
+
+          <button className="remove-btn" onClick={() => removefromcart(item)}>
+            Remove
+          </button>
+        </div>
+      ))}
+
+      {cart.length > 0 && (
+        <button className="total-btn" onClick={() => {
+          setShowCartModal(false);
+          calculateTotal();
+        }}>
+          Proceed to Payment (${total.toFixed(2)})
+        </button>
+      )}
+
+    </div>
+  </div>
+)}
 
             {/* Payment Modal */}
             {showPayment && (
